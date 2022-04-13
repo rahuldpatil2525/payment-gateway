@@ -13,6 +13,8 @@ namespace Checkout.Payment.Api.Services
     public interface IPaymentService
     {
         Task<PaymentResult> MakePaymentAsync(PaymentRequest request);
+
+        Task<PaymentResult> GetPaymentAsync(string paymentReference);
     }
 
     public class PaymentService : IPaymentService
@@ -32,6 +34,13 @@ namespace Checkout.Payment.Api.Services
             _paymentCoreMapper = paymentCoreMapper;
             _bankGateway = bankGateway;
             _logger = logger;
+        }
+
+        public async Task<PaymentResult> GetPaymentAsync(string paymentReference)
+        {
+            var paymentCore = await _paymentRepository.GetPaymentAsync(paymentReference);
+
+            return new PaymentResult(paymentCore);
         }
 
         public async Task<PaymentResult> MakePaymentAsync(PaymentRequest request)

@@ -27,6 +27,12 @@ namespace Checkout.Payment.Api.Controllers
             return StatusCode(500, response);
         }
 
+        protected ActionResult NotFound(string requestId)
+        {
+            var response = new ErrorResponse(requestId, "Not Found", "Not-Found","Payment Details for Requested Id not found." );
+            return StatusCode(400, response);
+        }
+
         protected ActionResult BadRequestResponse(ErrorDetail error)
         {
             var response = new ErrorResponse(error.RequestId, error.ErrorType, error.ErrorCode, error.ErrorMessage);

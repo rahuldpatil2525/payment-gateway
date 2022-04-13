@@ -1,13 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Checkout.Payment.Api.Database;
 using Checkout.Payment.Api.Mapper;
 using Checkout.Payment.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Checkout.Payment.Api.Repositories
 {
     public interface IPaymentRepository
     {
         Task RecordPaymentAsync(PaymentCore payment);
+        Task<PaymentCore> GetPaymentAsync(string paymentReference);
     }
 
     public class PaymentRepository : IPaymentRepository
@@ -19,6 +22,15 @@ namespace Checkout.Payment.Api.Repositories
         {
             _mapper = mapper;
             _paymentContext = paymentContext;
+        }
+
+        public async Task<PaymentCore> GetPaymentAsync(string paymentReference)
+        {
+            var payment = await _paymentContext.Payments
+                .Where(x => x.Id == paymentReference)
+                .FirstOrDefaultAsync();
+
+            return _mapper.Map(payment);
         }
 
         public async Task RecordPaymentAsync(PaymentCore payment)

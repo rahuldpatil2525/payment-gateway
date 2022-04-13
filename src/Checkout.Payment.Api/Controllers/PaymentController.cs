@@ -53,5 +53,20 @@ namespace Checkout.Payment.Api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(string paymentReference)
+        {
+            var result = await _paymentService.GetPaymentAsync(paymentReference);
+
+            if (result == null)
+            {
+                return NotFound(paymentReference);
+            }
+
+            var response = _responseComposer.ComposeHistory(result.Payment);
+
+            return Ok(response);
+        }
     }
 }

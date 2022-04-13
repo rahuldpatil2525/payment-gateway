@@ -4,9 +4,9 @@ namespace Checkout.Payment.Api.Models
 {
     public class PaymentCore
     {
-        public string Id { get; private set; }
+        public string Id { get; set; }
 
-        public string Status { get; private set; }
+        public string Status { get; set; }
 
         public string CardNumber { get; set; }
 
@@ -22,7 +22,7 @@ namespace Checkout.Payment.Api.Models
 
         public string Reference { get; set; }
 
-        public DateTime ProcessedOn { get; private set; }
+        public DateTime ProcessedOn { get; set; }
 
         public void SetStatus(string status)
         {
